@@ -5,15 +5,22 @@ import spock.lang.*
 class FullSpec extends Specification {
 
   def "mostrar el ciclo de ejecución de Spock"() {
-    setup: "Inicializa los reecursos para la especificación"
-    and: "Más elementos de inicio"
     given: "Dado un elemento de inicio"
-    and: "Y algo más al inicio"
+    // setup: "Inicializa los reecursos para la especificación"
+      println "Inicializando..."
+      String s = "Hola mundo"
+    and: "Más elementos de inicio"
+      println "Inicializando algo más..."
     when: "Ejecutas alguna acción"
+      s = s.toUpperCase()
     and: "Y posiblemente otra acción"
-    expect: "Esperas un resultado"
+      int size = s.size()
+    then: "Esperas un resultado"
+      size == 10
+      s == "HOLA MUNDO"
     cleanup: "Limpias y reinicias los recursos"
-    where: "Aplica para los casos que tu describas"
+      println "limpiando..."
+    //where: "Aplica para los casos que tu describas"
   }
 }
 
