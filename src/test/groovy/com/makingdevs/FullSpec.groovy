@@ -4,12 +4,12 @@ import spock.lang.*
 
 class FullSpec extends Specification {
 
-  @Unroll
+  @Unroll("cuando #cadena se convierte a mayusculas es #cadena_mayus y tiene longitud #tamanio")
   def "mostrar el ciclo de ejecución de Spock"() {
     given: "Dado un elemento de inicio"
     // setup: "Inicializa los reecursos para la especificación"
       println "Inicializando..."
-      String s = a
+      String s = cadena
     and: "Más elementos de inicio"
       println "Inicializando algo más..."
     when: "Ejecutas alguna acción"
@@ -17,15 +17,15 @@ class FullSpec extends Specification {
     and: "Y posiblemente otra acción"
       int size = s.size()
     then: "Esperas un resultado"
-      size == result
-      s == b
+      size == tamanio
+      s == cadena_mayus
     cleanup: "Limpias y reinicias los recursos"
       println "limpiando..."
     where: "Aplica para los casos que tu describas"
-    a       | b       | result
-    "hola"  | "HOLA"  | 4
-    "mundo" | "MUNDO" | 6
-    "foo"   | "FOO"   | 3
+    cadena  | cadena_mayus       | tamanio
+    "hola"  | "HOLA"             | 4
+    "mundo" | "MUNDO"            | 5
+    "foo"   | "FOO"              | 3
   }
 }
 
