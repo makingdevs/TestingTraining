@@ -35,4 +35,15 @@ class TransactionServiceSpec extends Specification {
       notThrown(NullPointerException)
       //thrown NullPointerException
   }
+
+  def "do a payment with a quantity"() {
+    given:
+      TransactionService service = new TransactionService()
+    and:
+      def amount = 100
+    when:
+      int result = service.doPayment(amount)
+    then:
+      result == 304
+  }
 }

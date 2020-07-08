@@ -1,6 +1,7 @@
 package com.makingdevs.services;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 public class TransactionService {
 
@@ -16,6 +17,10 @@ public class TransactionService {
 
   public void updateTable(String table){
     //throw new UnsupportedOperationException();
+  }
+
+  public int doPayment(BigDecimal amount){
+    return  0;
   }
 
 }
