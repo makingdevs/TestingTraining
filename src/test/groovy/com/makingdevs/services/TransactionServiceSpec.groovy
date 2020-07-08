@@ -40,10 +40,14 @@ class TransactionServiceSpec extends Specification {
     given:
       TransactionService service = new TransactionService()
     and:
+      //def paymentGatewayMock = Mock(PaymentGateway)
+      PaymentGateway paymentGatewayMock = Mock()
+      service.paymentGateway = paymentGatewayMock
+    and:
       def amount = 100
     when:
       int result = service.doPayment(amount)
     then:
-      result == 304
+      1 * paymentGatewayMock.authorize(_)
   }
 }
