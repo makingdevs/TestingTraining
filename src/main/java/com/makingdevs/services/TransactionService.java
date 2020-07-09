@@ -9,6 +9,7 @@ import com.makingdevs.services.PaymentGateway;
 public class TransactionService {
 
   private PaymentGateway paymentGateway;
+  private TransactionBuilder transactionBuilder;
 
   public void setPaymentGateway(PaymentGateway pg){
     this.paymentGateway = pg;
@@ -16,6 +17,14 @@ public class TransactionService {
 
   public PaymentGateway getPaymentGateway(){
     return this.paymentGateway;
+  }
+
+  public void setTransactionBuilder(TransactionBuilder tb){
+    this.transactionBuilder = tb;
+  }
+
+  public TransactionBuilder getTransactionBuilder(){
+    return this.transactionBuilder;
   }
 
   public int countRecordsFor(String table){
@@ -33,9 +42,10 @@ public class TransactionService {
   }
 
   public int doPayment(BigDecimal amount){
-    Transaction trx = new Transaction();
-    trx.setAmount(amount);
-    boolean passed = paymentGateway.authorize(trx);
+    Transaction trx = transactionBuilder.buildWithAmount(amount);
+    boolean passed = false;
+    if(trx.getStatus().equals("DO"))
+      passed = paymentGateway.authorize(trx);
     if(passed) return 304;
     return  0;
   }
