@@ -118,26 +118,31 @@ class TransactionServiceSpec extends Specification {
       result == 304
   }
 
+  @Unroll("For the amounts #_amounts the trx status are #_results")
   def "do many payments with many quantities and it's OK"() {
     given:
       TransactionService service = new TransactionService()
-    and: "Valid trx"
-      def validTrx = new Transaction()
-      validTrx.status = "DO"
-      def invalidTrx = new Transaction()
-      invalidTrx.status = "DONT"
     and:
       PaymentGateway paymentGatewayMock = Mock()
       service.paymentGateway = paymentGatewayMock
       TransactionBuilder transactionBuilderMock = Mock()
       service.transactionBuilder = transactionBuilderMock
     and:
-      def amounts = [100.0,200.0,300.0]
+      def amounts = _amounts
     when:
       def results = service.doManyPayments(amounts)
     then:
-      results == [304, 0, 304]
-      2 * paymentGatewayMock.authorize(_) >>> [true, true]
-      3 * transactionBuilderMock.buildWithAmount(_) >>> [validTrx, invalidTrx, validTrx]
+      results == _results
+      payGwTouches * paymentGatewayMock.authorize(_) >>> pyGwResponses
+      trxBdrTouches * transactionBuilderMock.buildWithAmount(_) >>> trxBldrResponses
+    where:
+      _amounts          || _results         |  payGwTouches | pyGwResponses | trxBdrTouches | trxBldrResponses
+      [1.0,2.0,3.0]     || [304, 0, 304]    | 2             | [true, true]  | 3             | [validTrx(), invalidTrx(), validTrx()]
+      [1.0,2.0,3.0,4.0] || [304, 0, 304, 0] | 2             | [true, true]  | 4             | [validTrx(), invalidTrx(), validTrx(), invalidTrx()]
+      [-1.0]            || [0]              | 1             | [false]       | 1             | [validTrx()]
+      [-1.0]            || [0]              | 0             | [false]       | 1             | [invalidTrx()]
   }
+
+  private def validTrx(){ new Transaction(status: "DO") }
+  private def invalidTrx(){ new Transaction(status: "DONT") }
 }
