@@ -137,7 +137,7 @@ class TransactionServiceSpec extends Specification {
       def results = service.doManyPayments(amounts)
     then:
       results == [304, 0, 304]
-      2 * paymentGatewayMock.authorize(_) >>> [true, false]
+      2 * paymentGatewayMock.authorize(_) >>> [true, true]
       3 * transactionBuilderMock.buildWithAmount(_) >>> [validTrx, invalidTrx, validTrx]
   }
 }
