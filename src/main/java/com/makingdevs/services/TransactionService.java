@@ -1,6 +1,7 @@
 package com.makingdevs.services;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.math.BigDecimal;
 import com.makingdevs.model.Transaction;
 import com.makingdevs.services.PaymentGateway;
@@ -32,12 +33,20 @@ public class TransactionService {
   }
 
   public int doPayment(BigDecimal amount){
-
     Transaction trx = new Transaction();
     trx.setAmount(amount);
     boolean passed = paymentGateway.authorize(trx);
     if(passed) return 304;
     return  0;
+  }
+
+  public List<Integer> doManyPayments(List<BigDecimal> amounts){
+    List<Integer> results = new ArrayList<Integer>();
+    for(BigDecimal amount : amounts) {
+      int result = doPayment(amount);
+      results.add(result);
+    };
+    return results;
   }
 
 }
