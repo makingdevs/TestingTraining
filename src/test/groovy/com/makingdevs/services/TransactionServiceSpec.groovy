@@ -97,14 +97,19 @@ class TransactionServiceSpec extends Specification {
       3 * paymentGatewayMock.authorize(_)
   }
 
-  @Ignore
   def "do a payment with a quantity and it's OK"() {
     given:
       TransactionService service = new TransactionService()
+    and: "Valid trx"
+       def trx = new Transaction()
+       trx.status = "DO"
     and:
       PaymentGateway paymentGatewayMock = Stub()
       paymentGatewayMock.authorize(_) >> true
       service.paymentGateway = paymentGatewayMock
+      TransactionBuilder transactionBuilderMock = Stub()
+      transactionBuilderMock.buildWithAmount(_) >> trx
+      service.transactionBuilder = transactionBuilderMock
     and:
       def amount = 100
     when:
@@ -113,19 +118,26 @@ class TransactionServiceSpec extends Specification {
       result == 304
   }
 
-  @Ignore
   def "do many payments with many quantities and it's OK"() {
     given:
       TransactionService service = new TransactionService()
+    and: "Valid trx"
+      def validTrx = new Transaction()
+      validTrx.status = "DO"
+      def invalidTrx = new Transaction()
+      invalidTrx.status = "DONT"
     and:
-      PaymentGateway paymentGatewayMock = Stub()
-      paymentGatewayMock.authorize(_) >>> [true, false, true]
+      PaymentGateway paymentGatewayMock = Mock()
       service.paymentGateway = paymentGatewayMock
+      TransactionBuilder transactionBuilderMock = Mock()
+      service.transactionBuilder = transactionBuilderMock
     and:
       def amounts = [100.0,200.0,300.0]
     when:
       def results = service.doManyPayments(amounts)
     then:
       results == [304, 0, 304]
+      2 * paymentGatewayMock.authorize(_) >>> [true, false]
+      3 * transactionBuilderMock.buildWithAmount(_) >>> [validTrx, invalidTrx, validTrx]
   }
 }
