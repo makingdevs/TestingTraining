@@ -63,6 +63,21 @@ class TransactionServiceSpec extends Specification {
     when:
       def results = service.doManyPayments(amounts)
     then:
-      2 * paymentGatewayMock.authorize(_)
+      3 * paymentGatewayMock.authorize(_)
+  }
+
+  def "do a payment with a quantity and it's OK"() {
+    given:
+      TransactionService service = new TransactionService()
+    and:
+      PaymentGateway paymentGatewayMock = Stub()
+      paymentGatewayMock.authorize(_) >> true
+      service.paymentGateway = paymentGatewayMock
+    and:
+      def amount = 100
+    when:
+      int result = service.doPayment(amount)
+    then:
+      result == 304
   }
 }
