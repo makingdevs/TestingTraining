@@ -80,4 +80,19 @@ class TransactionServiceSpec extends Specification {
     then:
       result == 304
   }
+
+  def "do many payments with many quantities and it's OK"() {
+    given:
+      TransactionService service = new TransactionService()
+    and:
+      PaymentGateway paymentGatewayMock = Stub()
+      paymentGatewayMock.authorize(_) >>> [true, false, true]
+      service.paymentGateway = paymentGatewayMock
+    and:
+      def amounts = [100.0,200.0,300.0]
+    when:
+      def results = service.doManyPayments(amounts)
+    then:
+      results == [304, 0, 304]
+  }
 }
