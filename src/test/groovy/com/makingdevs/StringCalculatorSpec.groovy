@@ -1,8 +1,16 @@
 package com.makingdevs
 
 import spock.lang.*
+import groovy.sql.*
 
 class StringCalculatorSpec extends Specification {
+
+  @Shared db = [
+    url: 'jdbc:mysql://localhost/data_for_test',
+    user: 'makingdevs',
+    password: 'makingdevs'
+  ]
+  @Shared sql = Sql.newInstance(db)
 
   @Unroll("The String Calculator for #input is #_result")
   def "do a string calculator"() {
