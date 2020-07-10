@@ -14,4 +14,5 @@ dependencies {
   compile 'org.codehaus.groovy:groovy-all:2.5.12'
   testCompile 'junit:junit:4.13'
   testCompile 'org.spockframework:spock-core:1.3-groovy-2.5'
+  testCompile 'mysql:mysql-connector-java:8.0.20'
 }
