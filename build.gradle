@@ -1,6 +1,7 @@
 plugins {
   id 'org.springframework.boot' version '2.3.1.RELEASE'
   id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+  id "com.github.erdi.webdriver-binaries" version "2.2"
   id 'groovy'
 }
 
@@ -32,4 +33,24 @@ test {
   useJUnitPlatform()
 }
 
+webdriverBinaries {
+  chromedriver {
+    version = '2.32'
+    architecture = 'X86'
+  }
+  geckodriver {
+    version = '0.19.0'
+    architecture = 'X86'
+  }
+}
 
+["chrome", "firefox"].each { driver ->
+  task "${driver}Test"(type: Test) {
+    group JavaBasePlugin.VERIFICATION_GROUP
+
+    outputs.upToDateWhen { false }  // Always run tests
+
+    systemProperty "geb.build.reportsDir", reporting.file("geb/$name")
+    systemProperty "geb.env", driver
+  }
+}
