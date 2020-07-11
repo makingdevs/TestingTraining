@@ -23,6 +23,9 @@ dependencies {
   }
   testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
   testImplementation 'org.spockframework:spock-spring:1.3-groovy-2.5'
+  testImplementation "org.gebish:geb-core:3.4"
+  testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:3.141.59"
+  testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.141.59"
 }
 
 test {
