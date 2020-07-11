@@ -36,8 +36,10 @@ class TransactionIntegrationSpec extends Specification {
       def data = new StringCalculatorData(input:"", result: 0)
     when:
       def result = repository.save(data)
+      def count = repository.count()
     then:
       result.id
+      count
   }
 
 }
