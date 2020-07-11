@@ -1,12 +1,12 @@
 package com.makingdevs.model;
 
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
 @Entity
-public class StringCalulatorData {
+public class StringCalculatorData {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class StringCalulatorData {
   }
 
   public void setId(long id) {
-    return this.id = id;
+    this.id = id;
   }
 
   public String getInput() {
@@ -27,7 +27,7 @@ public class StringCalulatorData {
   }
 
   public void setInput(String input) {
-    return this.input = input;
+    this.input = input;
   }
 
   public int getResult() {
@@ -35,7 +35,7 @@ public class StringCalulatorData {
   }
 
   public void setResult(int result) {
-    return this.result = result;
+    this.result = result;
   }
 
 }
