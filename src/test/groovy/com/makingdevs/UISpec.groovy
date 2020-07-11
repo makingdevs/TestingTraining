@@ -5,8 +5,12 @@ import spock.lang.*
 
 class UISpec extends GebReportingSpec {
 
-  @Unroll
-  def "visit makingdevs"(){
+  @Unroll("""
+    Cómo usuario anónimo
+    Deseo registrarme a mi entrenamiento
+    Con mi nombre que es: #nombre #apellidoPaterno #apellidoMaterno
+  """)
+  def "Validar la entrada de todos los datos"(){
     when:
       go "http://makingdevs.com"
     and:
