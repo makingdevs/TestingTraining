@@ -1,13 +1,13 @@
 package com.makingdevs
 
-import geb.spock.GebSpec
+import geb.spock.GebReportingSpec
 
-class UISpec extends GebSpec {
+class UISpec extends GebReportingSpec {
 
   def "visit makingdevs"(){
     when:
       go "http://makingdevs.com"
     then:
-      title.startsWith("MakingDevs")
+      title ==~ /.*MakingDevs.*/
   }
 }
